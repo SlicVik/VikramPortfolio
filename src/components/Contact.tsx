@@ -29,9 +29,9 @@ const Contact = () => {
   ];
 
   return (
-    <section className="py-20 px-6">
+    <section id="contact" className="py-20 px-6 animate-fade-in">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4 text-foreground">Get In Touch</h2>
+        <h2 className="text-4xl font-light mb-4 text-foreground">Get In Touch</h2>
         <p className="text-xl text-muted-foreground mb-12">
           Let's connect and discuss opportunities
         </p>
@@ -54,7 +54,7 @@ const Contact = () => {
                   <p className="text-sm text-muted-foreground mb-1">
                     {contact.label}
                   </p>
-                  <p className="font-medium text-foreground">{contact.value}</p>
+                  <p className="font-light text-foreground">{contact.value}</p>
                 </div>
               </div>
             </a>

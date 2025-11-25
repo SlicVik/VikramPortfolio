@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Timeline from "@/components/Timeline";
 import Technologies from "@/components/Technologies";
@@ -7,6 +8,7 @@ import Contact from "@/components/Contact";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <Hero />
       <Timeline />
       <Technologies />
