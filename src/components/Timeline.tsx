@@ -12,6 +12,7 @@ const Timeline = () => {
       type: "education",
       title: "Started BS in CS",
       icon: GraduationCap,
+      offsetLevel: 0, // vertical offset multiplier
       fullContent: {
         degree: "Bachelor's of Science in Computer Science and Engineering",
         school: "University of Toledo",
@@ -27,6 +28,7 @@ const Timeline = () => {
       type: "education",
       title: "Completed BS",
       icon: GraduationCap,
+      offsetLevel: 1,
       fullContent: {
         degree: "Bachelor's of Science in Computer Science and Engineering",
         school: "University of Toledo",
@@ -42,6 +44,7 @@ const Timeline = () => {
       type: "education",
       title: "Started MS",
       icon: GraduationCap,
+      offsetLevel: 2,
       fullContent: {
         degree: "Master's in Applied Data Science",
         school: "University of Michigan - Ann Arbor",
@@ -57,6 +60,7 @@ const Timeline = () => {
       type: "experience",
       title: "Research Assistant",
       icon: Briefcase,
+      offsetLevel: 3,
       fullContent: {
         role: "Research Assistant",
         company: "University of Michigan",
@@ -77,6 +81,7 @@ const Timeline = () => {
       type: "education",
       title: "MS Graduation",
       icon: GraduationCap,
+      offsetLevel: 0,
       fullContent: {
         degree: "Master's in Applied Data Science",
         school: "University of Michigan - Ann Arbor",
@@ -92,6 +97,7 @@ const Timeline = () => {
       type: "experience",
       title: "AI Developer",
       icon: Briefcase,
+      offsetLevel: 1,
       fullContent: {
         role: "AI Developer",
         company: "Integrated Informatics",
@@ -107,6 +113,8 @@ const Timeline = () => {
     },
   ];
 
+  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+
   // Calculate position based on year and month
   const getPosition = (year: number, month: number) => {
     const startYear = 2019;
@@ -116,6 +124,11 @@ const Timeline = () => {
     return (totalMonths / totalSpan) * 100;
   };
 
+  // Get year position
+  const getYearPosition = (year: number) => {
+    return getPosition(year, year === 2019 ? 8 : 1);
+  };
+
   return (
     <section id="timeline" className="py-20 px-6 bg-card/30 animate-slide-up">
       <div className="max-w-6xl mx-auto">
@@ -123,50 +136,74 @@ const Timeline = () => {
           Journey
         </h2>
 
-        <div className="relative py-12">
-          {/* Timeline line */}
-          <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-border"></div>
+        <div className="relative py-32 px-4">
+          {/* Single continuous timeline line */}
+          <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-border -translate-y-1/2"></div>
 
-          {/* Year markers */}
-          <div className="relative flex justify-between mb-20">
-            {[2019, 2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
-              <div key={year} className="flex flex-col items-center">
-                <div className="w-3 h-3 rounded-full bg-primary mb-2"></div>
-                <span className="text-sm font-light text-muted-foreground">{year}</span>
-              </div>
-            ))}
-          </div>
+          {/* Year markers on the line */}
+          {years.map((year) => (
+            <div
+              key={year}
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: `${getYearPosition(year)}%`, transform: "translate(-50%, -50%)" }}
+            >
+              <div className="w-3 h-3 rounded-full bg-muted-foreground/40"></div>
+              <span className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-light text-muted-foreground whitespace-nowrap">
+                {year}
+              </span>
+            </div>
+          ))}
 
-          {/* Events */}
-          <div className="relative h-64">
-            {events.map((event) => {
-              const Icon = event.icon;
-              const position = getPosition(event.year, event.month);
-              const isHovered = hoveredId === event.id;
-              const isEducation = event.type === "education";
+          {/* Events on the same line */}
+          {events.map((event) => {
+            const Icon = event.icon;
+            const position = getPosition(event.year, event.month);
+            const isHovered = hoveredId === event.id;
+            const isEducation = event.type === "education";
+            
+            // Alternate between top and bottom, with different offset levels to prevent overlap
+            const isAbove = event.offsetLevel % 2 === 0;
+            const verticalOffset = 60 + (Math.floor(event.offsetLevel / 2) * 40); // 60, 100, 140, etc.
 
-              return (
+            return (
+              <div
+                key={event.id}
+                className="absolute top-1/2 -translate-y-1/2"
+                style={{ left: `${position}%`, transform: "translate(-50%, -50%)" }}
+                onMouseEnter={() => setHoveredId(event.id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                {/* Event marker on the main line */}
                 <div
-                  key={event.id}
-                  className={`absolute ${
-                    isEducation ? "bottom-1/2 mb-8" : "top-1/2 mt-8"
+                  className={`w-4 h-4 rounded-full border-2 transition-all cursor-pointer ${
+                    isEducation
+                      ? "bg-primary border-primary hover:scale-125"
+                      : "bg-accent border-accent hover:scale-125"
                   }`}
-                  style={{ left: `${position}%`, transform: "translateX(-50%)" }}
-                  onMouseEnter={() => setHoveredId(event.id)}
-                  onMouseLeave={() => setHoveredId(null)}
-                >
-                  {/* Connector line */}
-                  <div
-                    className={`absolute ${
-                      isEducation ? "bottom-0 top-auto" : "top-0 bottom-auto"
-                    } left-1/2 w-0.5 h-8 bg-${
-                      isEducation ? "primary" : "accent"
-                    } -translate-x-1/2`}
-                  ></div>
+                ></div>
 
-                  {/* Event marker */}
+                {/* Connector line going up or down */}
+                <div
+                  className={`absolute left-1/2 w-0.5 -translate-x-1/2 ${
+                    isEducation ? "bg-primary/40" : "bg-accent/40"
+                  }`}
+                  style={{
+                    height: `${verticalOffset}px`,
+                    [isAbove ? "bottom" : "top"]: "100%",
+                  }}
+                ></div>
+
+                {/* Event card */}
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 ${
+                    isAbove ? "bottom-full" : "top-full"
+                  }`}
+                  style={{
+                    [isAbove ? "marginBottom" : "marginTop"]: `${verticalOffset}px`,
+                  }}
+                >
                   <div
-                    className={`relative p-3 rounded-lg border transition-all cursor-pointer ${
+                    className={`p-3 rounded-lg border transition-all cursor-pointer ${
                       isEducation
                         ? "bg-primary/10 border-primary hover:shadow-lg hover:shadow-primary/20"
                         : "bg-accent/10 border-accent hover:shadow-lg hover:shadow-accent/20"
@@ -177,69 +214,69 @@ const Timeline = () => {
                         isEducation ? "text-primary" : "text-accent"
                       }`}
                     />
-
-                    {/* Hover card */}
-                    {isHovered && (
-                      <div
-                        className={`absolute ${
-                          isEducation ? "top-full mt-2" : "bottom-full mb-2"
-                        } left-1/2 -translate-x-1/2 w-80 p-4 bg-card border border-border rounded-lg shadow-xl z-10 animate-fade-in`}
-                      >
-                        {"role" in event.fullContent ? (
-                          <>
-                            <h4 className="font-normal text-foreground mb-1">
-                              {event.fullContent.role}
-                            </h4>
-                            <p className="text-sm font-light text-primary mb-1">
-                              {event.fullContent.company}
-                            </p>
-                            <p className="text-xs font-light text-muted-foreground mb-3">
-                              {event.fullContent.location} | {event.fullContent.period}
-                            </p>
-                            <ul className="space-y-2">
-                              {event.fullContent.description.map((item, i) => (
-                                <li
-                                  key={i}
-                                  className="text-xs font-light text-muted-foreground flex gap-2"
-                                >
-                                  <span className="text-primary">•</span>
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </>
-                        ) : (
-                          <>
-                            <h4 className="font-normal text-foreground mb-1">
-                              {event.fullContent.degree}
-                            </h4>
-                            <p className="text-sm font-light text-primary mb-1">
-                              {event.fullContent.school}
-                            </p>
-                            <p className="text-xs font-light text-muted-foreground mb-2">
-                              {event.fullContent.location} | {event.fullContent.period}
-                            </p>
-                            <p className="text-xs font-light text-accent">
-                              GPA: {event.fullContent.gpa}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    )}
                   </div>
 
-                  {/* Simple title below marker */}
+                  {/* Simple title */}
                   <p
                     className={`absolute ${
-                      isEducation ? "bottom-full mb-1" : "top-full mt-1"
+                      isAbove ? "bottom-full mb-1" : "top-full mt-1"
                     } left-1/2 -translate-x-1/2 text-xs font-light text-muted-foreground whitespace-nowrap`}
                   >
                     {event.title}
                   </p>
+
+                  {/* Hover card with full details */}
+                  {isHovered && (
+                    <div
+                      className={`absolute ${
+                        isAbove ? "bottom-full mb-2" : "top-full mt-2"
+                      } left-1/2 -translate-x-1/2 w-80 p-4 bg-card border border-border rounded-lg shadow-xl z-10 animate-fade-in`}
+                    >
+                      {"role" in event.fullContent ? (
+                        <>
+                          <h4 className="font-normal text-foreground mb-1">
+                            {event.fullContent.role}
+                          </h4>
+                          <p className="text-sm font-light text-primary mb-1">
+                            {event.fullContent.company}
+                          </p>
+                          <p className="text-xs font-light text-muted-foreground mb-3">
+                            {event.fullContent.location} | {event.fullContent.period}
+                          </p>
+                          <ul className="space-y-2">
+                            {event.fullContent.description.map((item, i) => (
+                              <li
+                                key={i}
+                                className="text-xs font-light text-muted-foreground flex gap-2"
+                              >
+                                <span className="text-primary">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <>
+                          <h4 className="font-normal text-foreground mb-1">
+                            {event.fullContent.degree}
+                          </h4>
+                          <p className="text-sm font-light text-primary mb-1">
+                            {event.fullContent.school}
+                          </p>
+                          <p className="text-xs font-light text-muted-foreground mb-2">
+                            {event.fullContent.location} | {event.fullContent.period}
+                          </p>
+                          <p className="text-xs font-light text-accent">
+                            GPA: {event.fullContent.gpa}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
