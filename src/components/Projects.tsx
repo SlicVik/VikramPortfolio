@@ -20,9 +20,9 @@ const Projects = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-card/30">
+    <section id="projects" className="py-20 px-6 bg-card/30 animate-slide-right">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-16 text-center text-foreground">
+        <h2 className="text-4xl font-light mb-16 text-center text-foreground">
           Projects & Contributions
         </h2>
 
@@ -30,7 +30,7 @@ const Projects = () => {
         <div className="mb-16 flex flex-col items-center">
           <div className="flex items-center gap-3 mb-6">
             <Github className="w-6 h-6 text-primary" />
-            <h3 className="text-2xl font-semibold text-foreground">
+            <h3 className="text-2xl font-light text-foreground">
               GitHub Activity
             </h3>
           </div>
@@ -46,7 +46,7 @@ const Projects = () => {
 
         {/* Key Projects */}
         <div>
-          <h3 className="text-2xl font-semibold mb-8 text-center text-foreground">
+          <h3 className="text-2xl font-light mb-8 text-center text-foreground">
             Featured Projects
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -57,7 +57,7 @@ const Projects = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h4 className="font-semibold text-lg text-foreground">
+                  <h4 className="font-normal text-lg text-foreground">
                     {project.name}
                   </h4>
                   <a

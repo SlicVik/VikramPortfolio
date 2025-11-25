@@ -7,21 +7,17 @@ const Hero = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 animate-fade-in">
+    <section id="hero" className="min-h-screen flex items-center justify-center px-6 animate-fade-in pt-20">
       <div className="max-w-4xl text-center">
-        <h1 className="text-6xl md:text-7xl font-bold mb-4 text-foreground">
+        <h1 className="text-6xl md:text-7xl font-light mb-6 text-foreground">
           Vikram Vaddamani
         </h1>
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          <span className="px-4 py-2 bg-primary/10 text-primary rounded-full text-lg font-medium">
-            Software Engineer
-          </span>
-          <span className="px-4 py-2 bg-accent/10 text-accent rounded-full text-lg font-medium">
-            Data Scientist
-          </span>
-          <span className="px-4 py-2 bg-secondary text-secondary-foreground rounded-full text-lg font-medium">
-            Problem Solver
-          </span>
+        <div className="flex flex-wrap justify-center items-center gap-3 mb-8 text-lg text-muted-foreground">
+          <span>Software Engineer</span>
+          <span className="w-2 h-2 rounded-full bg-primary"></span>
+          <span>Data Scientist</span>
+          <span className="w-2 h-2 rounded-full bg-primary"></span>
+          <span>Problem Solver</span>
         </div>
         {isEditing ? (
           <div className="space-y-4">
