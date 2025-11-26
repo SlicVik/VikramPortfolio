@@ -61,6 +61,16 @@ const Contact = () => {
           ))}
         </div>
 
+        <div className="mt-8 flex justify-center">
+          <a
+            href="/resume.pdf"
+            download
+            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
+            Download Resume
+          </a>
+        </div>
+
         <div className="mt-12 pt-8 border-t border-border">
           <p className="text-sm text-muted-foreground">
             © 2025 Vikram Vaddamani. All rights reserved.
