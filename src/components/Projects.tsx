@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react";
 
 const Projects = () => {
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const projects = [
     {
       name: "Brain Sleep Dashboard",
@@ -58,39 +60,72 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* Key Projects */}
+        {/* Key Projects Carousel */}
         <div>
           <h3 className="text-2xl font-light mb-8 text-center text-foreground">
             Featured Projects
           </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            {projects.map((project, index) => (
+          <div className="relative max-w-3xl mx-auto">
+            {/* Navigation Buttons */}
+            <button
+              onClick={() => setCurrentProjectIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1))}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 p-3 bg-card border border-border rounded-full hover:bg-accent hover:shadow-lg transition-all"
+              aria-label="Previous project"
+            >
+              <ChevronLeft className="w-6 h-6 text-foreground" />
+            </button>
+
+            <button
+              onClick={() => setCurrentProjectIndex((prev) => (prev === projects.length - 1 ? 0 : prev + 1))}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 p-3 bg-card border border-border rounded-full hover:bg-accent hover:shadow-lg transition-all"
+              aria-label="Next project"
+            >
+              <ChevronRight className="w-6 h-6 text-foreground" />
+            </button>
+
+            {/* Project Card */}
+            <div className="overflow-hidden">
               <div
-                key={index}
-                className="p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                key={currentProjectIndex}
+                className="p-8 bg-card border border-border rounded-lg shadow-lg animate-fade-in"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h4 className="font-normal text-lg text-foreground">
-                    {project.name}
+                <div className="flex items-start justify-between mb-4">
+                  <h4 className="font-normal text-2xl text-foreground">
+                    {projects[currentProjectIndex].name}
                   </h4>
                   <a
-                    href={project.github}
+                    href={projects[currentProjectIndex].github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary hover:text-accent transition-colors"
                   >
-                    <ExternalLink className="w-5 h-5" />
+                    <ExternalLink className="w-6 h-6" />
                   </a>
                 </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {project.period}
+                <p className="text-sm text-muted-foreground mb-4">
+                  {projects[currentProjectIndex].period}
                 </p>
-                <p className="text-sm text-foreground leading-relaxed">
-                  {project.description}
+                <p className="text-base text-foreground leading-relaxed">
+                  {projects[currentProjectIndex].description}
                 </p>
+
+                {/* Pagination Dots */}
+                <div className="flex justify-center gap-2 mt-6">
+                  {projects.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentProjectIndex(index)}
+                      className={`h-2 rounded-full transition-all ${
+                        index === currentProjectIndex
+                          ? "w-8 bg-primary"
+                          : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                      }`}
+                      aria-label={`Go to project ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
