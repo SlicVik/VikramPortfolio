@@ -11,6 +11,13 @@ const Projects = () => {
       github: "https://github.com/SlicVik/eeg-nhis-app",
     },
     {
+      name: "Medical Paper Simplifier",
+      period: "2024",
+      description:
+        "An LLM-powered web application that automatically scans complex medical research PDFs to identify and simplify jargon like diseases, chemicals, and genes. Utilizes a dual-model architecture, combining SciSpacy for precise entity recognition and a custom fine-tuned Qwen 2.5-1.5B LLM to generate simplified definitions tailored to the user's knowledge level. Built with a Flask backend and vanilla HTML/JS frontend.",
+      github: "https://github.com/SlicVik",
+    },
+    {
       name: "Multi-Model Exploration of Depression Risk",
       period: "Jan 2025 – May 2025",
       description:
@@ -37,7 +44,6 @@ const Projects = () => {
           <div className="bg-card p-6 rounded-lg border border-border overflow-x-auto w-full">
             <GitHubCalendar
               username="SlicVik"
-              colorScheme="light"
               blockSize={12}
               fontSize={14}
             />
