@@ -24,6 +24,13 @@ const Projects = () => {
         "This project investigates the use of machine learning to predict depression severity based on self-reported mental health assessments and demographic features. We developed a supervised learning pipeline to classify individuals into depression severity categories and to estimate PHQ-9 total scores using models such as logistic regression, random forest, and support vector machines.",
       github: "https://github.com/SlicVik",
     },
+    {
+      name: "This Website",
+      period: "2025",
+      description:
+        "A professional portfolio website built with React, TypeScript, and Tailwind CSS. Features an interactive timeline visualization, GitHub activity integration, responsive design with dark mode support, and smooth scroll animations. Showcases projects, technical skills, and professional experience with a warm, modern design system.",
+      github: "https://github.com/SlicVik",
+    },
   ];
 
   return (
@@ -44,6 +51,7 @@ const Projects = () => {
           <div className="bg-card p-6 rounded-lg border border-border overflow-x-auto w-full">
             <GitHubCalendar
               username="SlicVik"
+              colorScheme="light"
               blockSize={12}
               fontSize={14}
             />
