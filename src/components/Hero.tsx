@@ -17,7 +17,7 @@ const Hero = () => {
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>Data Scientist</span>
           <span className="w-2 h-2 rounded-full bg-primary"></span>
-          <span>Problem Solver</span>
+          <span>IT Technician</span>
         </div>
         {isEditing ? (
           <div className="space-y-4">
