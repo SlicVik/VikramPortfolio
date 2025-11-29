@@ -99,8 +99,59 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    overscroll-behavior: none;
+    /* Ensure height allows for full extension */
+    height: 100%;
+    /* Set a base color to avoid white flashes */
+    background-color: hsl(var(--foreground));
+  }
+
   body {
-    @apply bg-background text-foreground font-light;
+    @apply text-foreground font-light;
+    min-height: 100%;
+    overscroll-behavior: none;
+    position: relative;
+    /* Transparent body to let the fixed pseudo-element show through */
+    background-color: transparent;
+  }
+
+  /* The "Extended" Matte Background 
+    This creates a fixed background layer that extends well beyond the viewport.
+    It mimics the Hero section's split (Dark/Light) so if you overscroll, 
+    you see more of the correct color, not the generic body background.
+  */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -50vh; /* Extend way up */
+    left: 0;
+    right: 0;
+    bottom: -50vh; /* Extend way down */
+    z-index: -50;
+    pointer-events: none;
+
+    /* Mobile: Vertical Split (Top Dark / Bottom Light) */
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--foreground)) 0%,
+      hsl(var(--foreground)) 50%,
+      hsl(var(--background)) 50%,
+      hsl(var(--background)) 100%
+    );
+  }
+
+  @media (min-width: 768px) {
+    body::before {
+      /* Desktop: Horizontal Split (Left Dark / Right Light) */
+      background: linear-gradient(
+        to right,
+        hsl(var(--foreground)) 0%,
+        hsl(var(--foreground)) 50%,
+        hsl(var(--background)) 50%,
+        hsl(var(--background)) 100%
+      );
+    }
   }
 }
 
@@ -108,19 +159,19 @@ All colors MUST be HSL.
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.8s ease-out;
   }
-  
+
   .animate-slide-left {
     animation: slideLeft 0.8s ease-out;
   }
-  
+
   .animate-slide-right {
     animation: slideRight 0.8s ease-out;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -131,7 +182,7 @@ All colors MUST be HSL.
       transform: translateY(0);
     }
   }
-  
+
   @keyframes slideUp {
     from {
       opacity: 0;
@@ -142,7 +193,7 @@ All colors MUST be HSL.
       transform: translateY(0);
     }
   }
-  
+
   @keyframes slideLeft {
     from {
       opacity: 0;
@@ -153,7 +204,7 @@ All colors MUST be HSL.
       transform: translateX(0);
     }
   }
-  
+
   @keyframes slideRight {
     from {
       opacity: 0;
@@ -164,7 +215,7 @@ All colors MUST be HSL.
       transform: translateX(0);
     }
   }
-  
+
   html {
     scroll-behavior: smooth;
   }

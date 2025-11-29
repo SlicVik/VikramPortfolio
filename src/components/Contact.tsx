@@ -1,4 +1,5 @@
 import { Mail, Phone, Linkedin, Github } from "lucide-react";
+import SectionTitle from "./SectionTitle";
 
 const Contact = () => {
   const contactInfo = [
@@ -31,7 +32,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 px-6 animate-fade-in">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-light mb-4 text-foreground">Get In Touch</h2>
+        <SectionTitle className="mb-8">Get In Touch</SectionTitle>
         <p className="text-xl text-muted-foreground mb-12">
           Let's connect and discuss opportunities
         </p>
@@ -41,8 +42,16 @@ const Contact = () => {
             <a
               key={index}
               href={contact.href}
-              target={contact.label === "LinkedIn" || contact.label === "GitHub" ? "_blank" : undefined}
-              rel={contact.label === "LinkedIn" || contact.label === "GitHub" ? "noopener noreferrer" : undefined}
+              target={
+                contact.label === "LinkedIn" || contact.label === "GitHub"
+                  ? "_blank"
+                  : undefined
+              }
+              rel={
+                contact.label === "LinkedIn" || contact.label === "GitHub"
+                  ? "noopener noreferrer"
+                  : undefined
+              }
               className="p-6 bg-card border border-border rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all animate-fade-in group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -63,7 +72,7 @@ const Contact = () => {
 
         <div className="mt-8 flex justify-center">
           <a
-            href="/resume.pdf"
+            href="/Resume_VikramVaddamani_DS_SWE.pdf"
             download
             className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
           >

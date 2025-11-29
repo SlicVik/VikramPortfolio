@@ -1,4 +1,14 @@
-import { Code2, Database, Cloud, Lock, GitBranch, Cpu, Brain, Globe } from "lucide-react";
+import {
+  Code2,
+  Database,
+  Cloud,
+  Lock,
+  GitBranch,
+  Cpu,
+  Brain,
+  Globe,
+} from "lucide-react";
+import SectionTitle from "./SectionTitle";
 
 const Technologies = () => {
   const technologies = [
@@ -31,9 +41,7 @@ const Technologies = () => {
   return (
     <section id="technologies" className="py-20 px-6 animate-slide-left">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-light mb-16 text-center text-foreground">
-          Technical Skills
-        </h2>
+        <SectionTitle>Technical Skills</SectionTitle>
         <div className="flex flex-wrap justify-center gap-4">
           {technologies.map((tech, index) => {
             const Icon = tech.icon;

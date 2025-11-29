@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GraduationCap, Briefcase } from "lucide-react";
+import SectionTitle from "./SectionTitle";
 
 const Timeline = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -139,7 +140,7 @@ const Timeline = () => {
       type: "experience",
       title: "AI Developer",
       icon: Briefcase,
-      offsetLevel: 3,
+      offsetLevel: 5,
       fullContent: {
         role: "AI Developer",
         company: "Integrated Informatics",
@@ -172,13 +173,80 @@ const Timeline = () => {
   };
 
   return (
-    <section id="timeline" className="py-20 px-6 bg-card/30 animate-slide-up">
+    <section
+      id="timeline"
+      className="pt-10 pb-20 px-6 bg-card/30 animate-slide-up"
+    >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-light mb-16 text-center text-foreground">
-          Journey
-        </h2>
+        <SectionTitle className="mb-24 md:mb-32">Journey</SectionTitle>
 
-        <div className="relative py-32 px-4">
+        {/* MOBILE VIEW (Vertical Stack) */}
+        <div className="block md:hidden relative pl-8 border-l border-border space-y-12">
+          {events.map((event) => {
+            const Icon = event.icon;
+            const isEducation = event.type === "education";
+            return (
+              <div key={event.id} className="relative">
+                {/* Dot on the line */}
+                <div
+                  className={`absolute -left-[39px] top-0 w-5 h-5 rounded-full border-4 border-background ${
+                    isEducation ? "bg-primary" : "bg-accent"
+                  }`}
+                />
+
+                <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Icon
+                      className={`w-5 h-5 ${
+                        isEducation ? "text-primary" : "text-accent"
+                      }`}
+                    />
+                    <span className="text-xs font-medium text-muted-foreground border border-border px-2 py-0.5 rounded-full">
+                      {event.fullContent.period}
+                    </span>
+                  </div>
+
+                  {"role" in event.fullContent ? (
+                    <>
+                      <h4 className="font-normal text-xl text-foreground mb-1">
+                        {event.fullContent.role}
+                      </h4>
+                      <p className="text-sm font-medium text-primary mb-2">
+                        {event.fullContent.company}
+                      </p>
+                      <ul className="space-y-2 mt-4">
+                        {event.fullContent.description.map((item, i) => (
+                          <li
+                            key={i}
+                            className="text-sm font-light text-muted-foreground flex gap-2"
+                          >
+                            <span className="text-primary mt-1.5">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    <>
+                      <h4 className="font-normal text-xl text-foreground mb-1">
+                        {event.fullContent.degree}
+                      </h4>
+                      <p className="text-sm font-medium text-primary mb-2">
+                        {event.fullContent.school}
+                      </p>
+                      <p className="text-sm font-light text-accent mt-2">
+                        GPA: {event.fullContent.gpa}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* DESKTOP VIEW (Horizontal Timeline) */}
+        <div className="hidden md:block relative py-32 px-4">
           {/* Single continuous timeline line */}
           <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-border -translate-y-1/2"></div>
 
@@ -187,7 +255,10 @@ const Timeline = () => {
             <div
               key={year}
               className="absolute top-1/2 -translate-y-1/2"
-              style={{ left: `${getYearPosition(year)}%`, transform: "translate(-50%, -50%)" }}
+              style={{
+                left: `${getYearPosition(year)}%`,
+                transform: "translate(-50%, -50%)",
+              }}
             >
               <div className="w-3 h-3 rounded-full bg-muted-foreground/40"></div>
               <span className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-light text-muted-foreground whitespace-nowrap">
@@ -197,21 +268,31 @@ const Timeline = () => {
           ))}
 
           {/* Events on the same line */}
-          {events.map((event) => {
+          {events.map((event, index) => {
             const Icon = event.icon;
             const position = getPosition(event.year, event.month);
             const isHovered = hoveredId === event.id;
             const isEducation = event.type === "education";
-            
+
             // Alternate between top and bottom, with different offset levels to prevent overlap
             const isAbove = event.offsetLevel % 2 === 0;
-            const verticalOffset = 60 + (Math.floor(event.offsetLevel / 2) * 40); // 60, 100, 140, etc.
+            const verticalOffset = 60 + Math.floor(event.offsetLevel / 2) * 40; // 60, 100, 140, etc.
+
+            // Edge detection logic for tooltip positioning
+            const isFirst = index === 0;
+            const isLast = index === events.length - 1;
 
             return (
               <div
                 key={event.id}
-                className="absolute top-1/2 -translate-y-1/2"
-                style={{ left: `${position}%`, transform: "translate(-50%, -50%)" }}
+                // Updated className to dynamically apply z-50 to the hovered item wrapper
+                className={`absolute top-1/2 -translate-y-1/2 ${
+                  isHovered ? "z-50" : "z-10"
+                }`}
+                style={{
+                  left: `${position}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
                 onMouseEnter={() => setHoveredId(event.id)}
                 onMouseLeave={() => setHoveredId(null)}
               >
@@ -235,13 +316,15 @@ const Timeline = () => {
                   }}
                 ></div>
 
-                {/* Event card */}
+                {/* Event card container (Dot/Icon) */}
                 <div
                   className={`absolute left-1/2 -translate-x-1/2 ${
                     isAbove ? "bottom-full" : "top-full"
                   }`}
                   style={{
-                    [isAbove ? "marginBottom" : "marginTop"]: `${verticalOffset}px`,
+                    [isAbove
+                      ? "marginBottom"
+                      : "marginTop"]: `${verticalOffset}px`,
                   }}
                 >
                   <div
@@ -272,7 +355,15 @@ const Timeline = () => {
                     <div
                       className={`absolute ${
                         isAbove ? "bottom-full mb-2" : "top-full mt-2"
-                      } left-1/2 -translate-x-1/2 w-80 p-4 bg-card border border-border rounded-lg shadow-xl z-10 animate-fade-in`}
+                      } w-96 p-4 bg-card border border-border rounded-lg shadow-xl animate-fade-in 
+                      ${
+                        isFirst
+                          ? "left-0"
+                          : isLast
+                          ? "right-0"
+                          : "left-1/2 -translate-x-1/2"
+                      }
+                      `}
                     >
                       {"role" in event.fullContent ? (
                         <>
@@ -283,13 +374,14 @@ const Timeline = () => {
                             {event.fullContent.company}
                           </p>
                           <p className="text-xs font-light text-muted-foreground mb-3">
-                            {event.fullContent.location} | {event.fullContent.period}
+                            {event.fullContent.location} |{" "}
+                            {event.fullContent.period}
                           </p>
                           <ul className="space-y-2">
                             {event.fullContent.description.map((item, i) => (
                               <li
                                 key={i}
-                                className="text-xs font-light text-muted-foreground flex gap-2"
+                                className="text-xs font-light text-muted-foreground flex gap-2 text-left"
                               >
                                 <span className="text-primary">•</span>
                                 <span>{item}</span>
@@ -306,7 +398,8 @@ const Timeline = () => {
                             {event.fullContent.school}
                           </p>
                           <p className="text-xs font-light text-muted-foreground mb-2">
-                            {event.fullContent.location} | {event.fullContent.period}
+                            {event.fullContent.location} |{" "}
+                            {event.fullContent.period}
                           </p>
                           <p className="text-xs font-light text-accent">
                             GPA: {event.fullContent.gpa}
