@@ -124,33 +124,31 @@ All colors MUST be HSL.
   body::before {
     content: "";
     position: fixed;
-    top: -50vh; /* Extend way up */
+    top: -50vh;
+    /* Extend way up */
     left: 0;
     right: 0;
-    bottom: -50vh; /* Extend way down */
+    bottom: -50vh;
+    /* Extend way down */
     z-index: -50;
     pointer-events: none;
 
     /* Mobile: Vertical Split (Top Dark / Bottom Light) */
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--foreground)) 0%,
-      hsl(var(--foreground)) 50%,
-      hsl(var(--background)) 50%,
-      hsl(var(--background)) 100%
-    );
+    background: linear-gradient(to bottom,
+        hsl(var(--foreground)) 0%,
+        hsl(var(--foreground)) 50%,
+        hsl(var(--background)) 50%,
+        hsl(var(--background)) 100%);
   }
 
   @media (min-width: 768px) {
     body::before {
       /* Desktop: Horizontal Split (Left Dark / Right Light) */
-      background: linear-gradient(
-        to right,
-        hsl(var(--foreground)) 0%,
-        hsl(var(--foreground)) 50%,
-        hsl(var(--background)) 50%,
-        hsl(var(--background)) 100%
-      );
+      background: linear-gradient(to right,
+          hsl(var(--foreground)) 0%,
+          hsl(var(--foreground)) 50%,
+          hsl(var(--background)) 50%,
+          hsl(var(--background)) 100%);
     }
   }
 }
@@ -177,6 +175,7 @@ All colors MUST be HSL.
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -188,6 +187,7 @@ All colors MUST be HSL.
       opacity: 0;
       transform: translateY(40px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -199,6 +199,7 @@ All colors MUST be HSL.
       opacity: 0;
       transform: translateX(40px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -210,10 +211,57 @@ All colors MUST be HSL.
       opacity: 0;
       transform: translateX(-40px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
     }
+  }
+
+  /* Hexagon shape using clip-path */
+  .hexagon {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  /* Honeycomb grid layout */
+  .honeycomb-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .honeycomb-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .honeycomb-row:nth-child(even) {
+    margin-left: calc(var(--hex-width, 180px) / 2 + 0.25rem);
+  }
+
+  /* Hexagon hover glow effect */
+  .hexagon-glow {
+    position: relative;
+  }
+
+  .hexagon-glow::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: linear-gradient(135deg,
+        hsl(var(--primary) / 0.5),
+        hsl(var(--accent) / 0.3));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .hexagon-glow:hover::before {
+    opacity: 1;
   }
 
   html {
